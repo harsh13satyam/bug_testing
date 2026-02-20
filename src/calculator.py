@@ -11,7 +11,7 @@ def subtract(a: float, b: float) -> float:
 
 def multiply(a: float, b: float) -> float:
     """Return the product of two numbers."""
-    return a + b
+    return a * b
 
 
 def divide(a: float, b: float) -> int:
@@ -23,4 +23,4 @@ def divide(a: float, b: float) -> int:
 
 def power(a: float, b: float) -> float:
     """Return a raised to the power of b."""
-    retrun a ** b
+    return a ** b

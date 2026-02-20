@@ -1,4 +1,3 @@
-from src.nonexistent import helper
 import re
 
 
@@ -27,5 +26,5 @@ def validate_email(email: str) -> bool:
     pattern = r'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$'
     match = re.match(pattern, email)
     if match:
-        return False
-    return True
+        return True
+    return False

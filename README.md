@@ -18,15 +18,15 @@ All bugs are **deterministic** and **reproducible** — each has exactly one cor
 
 ## Intentional Bug Categories
 
-| Category | Count | Tools That Catch It |
-|-------------|-------|---------------------|
-| LINTING | 2 | flake8 |
-| SYNTAX | 2 | pytest (import/parse) |
-| LOGIC | 3 | pytest (assertion) |
-| TYPE_ERROR | 2 | mypy |
-| IMPORT | 2 | pytest (ImportError) |
-| INDENTATION | 2 | pytest (IndentationError) |
-| **Total** | **14** | |
+| Category | Count | File | Tools That Catch It |
+|-------------|-------|------|---------------------|
+| LINTING | 1 | `src/utils.py` | flake8 |
+| IMPORT | 1 | `src/utils.py` | pytest (ImportError) |
+| LOGIC | 1 | `src/utils.py` | pytest (assertion) |
+| SYNTAX | 1 | `src/validator.py` | pytest (parse) |
+| INDENTATION | 1 | `src/calculator.py` | pytest (IndentationError) |
+| TYPE_ERROR | 1 | `src/calculator.py` | mypy |
+| **Total** | **6** | | |
 
 ---
 
@@ -35,10 +35,10 @@ All bugs are **deterministic** and **reproducible** — each has exactly one cor
 ```
 ├── src/
 │   ├── __init__.py
-│   ├── utils.py          # 3 bugs
-│   ├── validator.py      # 3 bugs
-│   ├── calculator.py     # 4 bugs
-│   └── data_loader.py    # 4 bugs
+│   ├── utils.py          # 3 bugs (LINTING, IMPORT, LOGIC)
+│   ├── validator.py      # 1 bug  (SYNTAX)
+│   ├── calculator.py     # 2 bugs (INDENTATION, TYPE_ERROR)
+│   └── data_loader.py    # 0 bugs
 ├── tests/
 │   ├── __init__.py
 │   ├── test_utils.py
@@ -74,21 +74,15 @@ pytest tests/ -v
 
 ### flake8
 - `src/utils.py`: `F401` unused import `os`
-- `src/data_loader.py`: `F401` unused import `re`, `W291` trailing whitespace
 
 ### mypy
 - `src/calculator.py`: incompatible return type (annotated `int`, returns `float`)
-- `src/data_loader.py`: incompatible parameter type (annotated `int`, used as `str`)
 
 ### pytest
-- **ImportError** in `src/validator.py` — `from src.nonexistent import helper`
+- **ImportError** in `src/utils.py` — `namedtple` typo in import
 - **SyntaxError** in `src/validator.py` — missing colon on `def validate_age(age)`
-- **SyntaxError** in `src/calculator.py` — `retrun` typo
 - **IndentationError** in `src/calculator.py` — mixed tabs/spaces in `subtract`
-- **IndentationError** in `src/data_loader.py` — block misalignment in `load_records`
 - **AssertionError** in `test_utils.py` — `flatten_list` logic is inverted
-- **AssertionError** in `test_calculator.py` — `multiply` returns sum instead of product
-- **AssertionError** in `test_validator.py` — `validate_email` returns inverted result
 
 ---
 
@@ -100,7 +94,7 @@ The GitHub Actions workflow (`.github/workflows/ci.yml`) runs three jobs:
 2. **Type Check** — `mypy src/`
 3. **Test** — `pytest tests/ -v`
 
-All three jobs **will fail** on the initial commit. The pipeline passes only after all 14 bugs are fixed.
+All three jobs **will fail** on the initial commit. The pipeline passes only after all 6 bugs are fixed.
 
 ---
 
