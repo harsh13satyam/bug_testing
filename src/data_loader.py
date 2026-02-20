@@ -1,5 +1,3 @@
-import json
-
 
 def parse_csv_line(line: str, delimiter: str = ',') -> list:
     """Parse a single CSV line into a list of values."""
